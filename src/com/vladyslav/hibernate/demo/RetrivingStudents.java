@@ -10,6 +10,7 @@ import com.vladyslav.demo.entity.Student;
 
 public class RetrivingStudents {
 	
+	private static List<Student> list;
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
 								 .configure("hibernate.cfg.xml")
@@ -22,17 +23,25 @@ public class RetrivingStudents {
 	
 		session.beginTransaction();
 		
-		// query Students 
-		List<Student> list = session.createQuery("from Student").list();
+		
+	 list = session.createQuery("from Student").getResultList();
 		
 		// display Students
-		list.forEach(lists -> System.out.println(lists));
+		list.forEach(temp -> System.out.println(temp));
 		
 		// query Students 
-		List<Student> list2 = session.createQuery("from Student s where s.firstName='Vlad'").list();
+		list = session.createQuery("from Student s where s.firstName='Vlad'").getResultList();
 		
 		// display Students
-		list2.forEach(lists -> System.out.println("Students who have first name - Vlad" + list));
+		list.forEach(temp -> System.out.println("Students who have first name - Vlad" + temp));
+		
+		// query Students 
+		list = session.createQuery("from Student s where "
+				+ "s.lastName='Osmachko' OR s.email LIKE '%gmail.com'").getResultList();
+		
+		// display Students
+		list.forEach(temp -> System.out.println("Students who have last name Osmachko or who has"
+				+ "google mail" + temp));
 	
 		session.getTransaction().commit();
 	} finally {
