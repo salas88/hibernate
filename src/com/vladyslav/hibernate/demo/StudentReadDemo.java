@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.vladyslav.demo.entity.Student;
 
-public class StudentDemo {
+public class StudentReadDemo {
 	
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
@@ -15,17 +15,11 @@ public class StudentDemo {
 								 .buildSessionFactory();
 		
 	Session session = factory.getCurrentSession();
+	session.beginTransaction();
+	int id =1;
+	Student theStudent = session.get(Student.class,id);
+	System.out.println(theStudent);
+	session.getTransaction().commit();;
 	
-	try {
-		Student tempStudent = new Student("Vlad", "Pikalov", "pikalov@gmail.com");
-		Student tempStudent1 = new Student("Nikita", "Ze", "pikalov@gmail.com");
-		session.beginTransaction();
-		session.save(tempStudent);
-		session.save(tempStudent1);
-		session.getTransaction().commit();;
-		System.out.println("Done!");
-	}finally {
-		session.close();
-	}
 	}
 }
